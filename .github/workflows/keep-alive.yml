@@ -9,10 +9,12 @@ jobs:
   keep-alive:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - name: keep-alive
+        run: |
           repos=( keep-alive ${{ vars.REPOS }} )
           for repo in "${repos[@]}"
           do
+            echo "${{ github.repository_owner }}/$repo"
             gh repo edit "${{ github.repository_owner }}/$repo" --add-topic keep-alive
             gh repo edit "${{ github.repository_owner }}/$repo" --remove-topic keep-alive
           done
