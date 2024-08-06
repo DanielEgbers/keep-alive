@@ -1,0 +1,20 @@
+name: keep-alive
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 3 * * *
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          repos=( keep-alive ${{ vars.REPOS }} )
+          for repo in "${repos[@]}"
+          do
+            gh repo edit "${{ github.repository_owner }}/$repo" --add-topic keep-alive
+            gh repo edit "${{ github.repository_owner }}/$repo" --remove-topic keep-alive
+          done
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
